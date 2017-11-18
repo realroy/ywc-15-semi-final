@@ -8,21 +8,34 @@ class App extends Component {
     major: 'all',
     announcers: [],
     showed_announcers: [],
+    queryName: ''
   }
 
-  filterAnnouncersByMajor = (major = 'all') => this.state.announcers.filter(a => a.major === major )
+  filterAnnouncersByName = (announcers = [], queryName = '') => (queryName === '')
+    ? announcers
+    : announcers.filter(a => a.firstName.includes(queryName) || a.lastName.includes(queryName))
+
+  filterAnnouncersByMajor = (announcers = [], major = 'all') => (major === 'all')
+    ? announcers
+    : announcers.filter(a => a.major === major )
 
   handleClick = e => {
     e.preventDefault()
     const major = e.target.id.split("-")[1]
     this.setState(prevState => Object.assign({}, prevState, { major }))
-    this.updateShowedAnnouncers(major)
+    this.updateShowedAnnouncers(major, this.state.queryName)
   }
 
-  updateShowedAnnouncers = (major = 'all') => {
-    const nextState = (major === 'all')
-      ? { showed_announcers: this.state.announcers }
-      : { showed_announcers: this.filterAnnouncersByMajor(major) }
+  handleChange = e => {
+    e.preventDefault()
+    const queryName = e.target.value
+    this.setState(prevState => Object.assign({}, prevState, { queryName }))
+    this.updateShowedAnnouncers(this.state.major, queryName)
+  }
+
+  updateShowedAnnouncers = (major = 'all', queryName = '') => {
+    const announcerFilteredByMajor = this.filterAnnouncersByMajor(this.state.announcers, major)
+    const nextState = { showed_announcers: this.filterAnnouncersByName(announcerFilteredByMajor, queryName) }
     this.setState(prevState => Object.assign({}, prevState, nextState))
   }
 
@@ -49,13 +62,18 @@ class App extends Component {
           <button id="btn-marketing" onClick={this.handleClick}>Web Marketing</button>
           <button id="btn-programming" onClick={this.handleClick}>Web Programming</button>
         </div>
+        <form onChange={this.handleChange}>
+          <input type="text" id="input-query-name" value={this.state.queryName} placeholder="Type name to search..." />
+        </form>
         <div>
-          {this.state.showed_announcers.map(({firstName, lastName, major}, i) => (
-            <div key={i}>
-              <div>Name: {firstName} {lastName}</div>
-              <div>Major: {major[0].toUpperCase()+major.slice(1)}</div>
-            </div>
-          ))}
+          {(this.state.showed_announcers.length > 0)
+            ? this.state.showed_announcers.map(({firstName, lastName, major}, i) => (
+              <div key={i}>
+                <div>Name: {firstName} {lastName}</div>
+                <div>Major: {major[0].toUpperCase()+major.slice(1)}</div>
+              </div>
+            ))
+            : <h1 style={{color: 'red'}}>{`Can't find the name "${this.state.queryName}" in Major: "${this.state.major}"!`}</h1>}
         </div>
       </div>
     );
