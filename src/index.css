@@ -1,7 +1,16 @@
+@import url('https://fonts.googleapis.com/css?family=Chonburi');
+
+* {
+  font-family: 'Chonburi', sans-serif;
+}
+
+button {
+  font-family: 'Chonburi', sans-serif;
+}
+
 body {
   color: #ffffff;
   background-color: #1e262f;
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
 }
