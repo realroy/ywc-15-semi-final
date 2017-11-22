@@ -60,7 +60,6 @@ class App extends Component {
   }
 
   render() {
-    console.log(this.state)
     const {major, announcers, showedAnnouncers, queryName} = this.state
     return (
       <div className="">
