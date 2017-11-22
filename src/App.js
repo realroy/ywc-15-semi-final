@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 
 import AnnouncerList from './components/AnnouncerList'
+import FloatButton from './components/FloatButton'
 import MajorFilter from './components/MajorFilter'
 import SearchBar from './components/SearchBar'
 
@@ -12,6 +13,7 @@ import './App.css'
 class App extends Component {
 
   state = {
+    isFloatButtonDisplay: false,
     major: 'all',
     announcers: [],
     showedAnnouncers: [],
@@ -49,20 +51,27 @@ class App extends Component {
     this.setState(prevState => Object.assign({}, prevState, nextState))
   }
 
+  isOnTop = () => window.scrollY === 0
+
   async componentWillMount() {
     try {
       const announcers = await fetchAnnouncers()
       await this.setState(prevState => Object.assign({}, prevState, {announcers}))
       await this.updateShowedAnnouncers()
+      document.addEventListener(
+        "scroll",
+        () => this.setState(prevState => Object.assign({}, prevState, { isFloatButtonDisplay: !this.isOnTop() }))
+      )
     } catch (err) {
       console.error(err)
     }
   }
 
   render() {
-    const {major, announcers, showedAnnouncers, queryName} = this.state
+    const {major, announcers, showedAnnouncers, queryName, isFloatButtonDisplay} = this.state
     return (
       <div className="">
+        <FloatButton isDisplay={isFloatButtonDisplay}/>
         <header className="tc">
           <img src={logo} className="" alt="logo"/>
           <h1>SEMI FINAL ROUND</h1>
@@ -73,12 +82,13 @@ class App extends Component {
               handleChange={this.handleChange}
               handleReset={this.handleReset}
               queryName={queryName}/>
-            <MajorFilter handleClick={this.handleClick}/> {announcers.length === 0
-              ? <h1 className="tc">Now Loading...</h1>
-              : <AnnouncerList
-                showedAnnouncers={showedAnnouncers}
-                major={major}
-                queryName={queryName}/>}
+            <MajorFilter handleClick={this.handleClick}/>
+              {announcers.length === 0
+                ? <h1 className="tc">Now Loading...</h1>
+                : <AnnouncerList
+                  showedAnnouncers={showedAnnouncers}
+                  major={major}
+                  queryName={queryName}/>}
           </div>
         </div>
 

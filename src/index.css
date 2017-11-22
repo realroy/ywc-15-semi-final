@@ -14,3 +14,19 @@ body {
   margin: 0;
   padding: 0;
 }
+
+#float-btn {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  margin: 8px;
+  padding: 16px 24px 16px 24px;
+  border: none;
+  color: black;
+  background: #ffffff;
+  border-radius: 100%; 
+}
+
+#float-btn:hover {
+  background: #dddddd;
+}
