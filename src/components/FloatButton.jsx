@@ -1,5 +1,5 @@
 import React from 'react'
-import arrow from '../ic_arrow_upward_black_48px.svg'
+import arrow from '../arrow.svg'
 
 const handleClick = e => {
   const a = 50

@@ -1,6 +1,19 @@
-export const filterByName = (array = [], name = '') => name === '' 
-  ? array
-  : array.filter(each => each.firstName === name || each.lastName === name)
+export const filterByName = (array = [], query = '') => {
+  query = query.trim()
+  const splitedQuery = query.split(' ')
+  if(query === '')
+    return array
+  if(splitedQuery.length === 2)
+    return array.filter(each => each.firstName.includes(splitedQuery[0]) && each.lastName.includes(splitedQuery[1]))
+  if(splitedQuery.length === 1)
+    return array.filter(
+      each => (
+        each.firstName.includes(query)
+        || each.lastName.includes(query)
+        || each.interviewRef.includes(query)
+        || each.interviewRef.includes(query.toUpperCase())
+      ))
+}
   
 export const filterByMajor = (array = [], major = 'all') => major === 'all'
   ? array

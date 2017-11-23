@@ -3,6 +3,7 @@ import React, {Component} from 'react'
 import AnnouncerList from './components/AnnouncerList'
 import FloatButton from './components/FloatButton'
 import MajorFilter from './components/MajorFilter'
+import NavBar from './components/NavBar'
 import SearchBar from './components/SearchBar'
 
 import {fetchAnnouncers, filterByName, filterByMajor} from './utils'
@@ -13,6 +14,7 @@ import './App.css'
 class App extends Component {
 
   state = {
+    isNavbarDisplay: false,
     isFloatButtonDisplay: false,
     major: 'all',
     announcers: [],
@@ -21,25 +23,26 @@ class App extends Component {
   }
 
   handleChange = e => {
-    e.preventDefault()
     const queryName = e.target.value
     this.setState(prevState => Object.assign({}, prevState, {queryName}))
-    this.updateShowedAnnouncers(this.state.major, queryName)
+    this.updateShowedAnnouncers(this.state.major, e.target.value)
   }
 
-  handleClick = e => {
-    e.preventDefault()
-    const major = e
-      .target
-      .id
-      .split("-")[1]
+  handleClick = e => this.changeMajor(e.target.id)
+
+  changeMajor = (major = 'all') => {
     this.setState(prevState => Object.assign({}, prevState, {major}))
     this.updateShowedAnnouncers(major, this.state.queryName)
   }
 
+  handleSelect = e => this.changeMajor(e.target.value)
+
   handleReset = e => {
     e.preventDefault()
-    this.setState(prevState => Object.assign({}, prevState, { major: 'all', queryName: ''}))
+    this.setState(prevState => Object.assign({}, prevState, {
+      major: 'all',
+      queryName: ''
+    }))
     this.updateShowedAnnouncers()
   }
 
@@ -53,42 +56,54 @@ class App extends Component {
 
   isOnTop = () => window.scrollY === 0
 
+  shouldNavbarShow = () => window.scrollY >= 500 || window.screen.width < 768
+
   async componentWillMount() {
     try {
       const announcers = await fetchAnnouncers()
       await this.setState(prevState => Object.assign({}, prevState, {announcers}))
       await this.updateShowedAnnouncers()
-      document.addEventListener(
-        "scroll",
-        () => this.setState(prevState => Object.assign({}, prevState, { isFloatButtonDisplay: !this.isOnTop() }))
-      )
+      document.addEventListener("scroll", () => this.setState(prevState => Object.assign({}, prevState, {
+        isFloatButtonDisplay: !this.isOnTop(),
+        isNavbarDisplay: this.shouldNavbarShow()
+      })))
     } catch (err) {
       console.error(err)
     }
   }
 
   render() {
-    const {major, announcers, showedAnnouncers, queryName, isFloatButtonDisplay} = this.state
+    const {major, announcers, showedAnnouncers, queryName, isFloatButtonDisplay, isNavbarDisplay} = this.state
     return (
       <div className="">
         <FloatButton isDisplay={isFloatButtonDisplay}/>
-        <header className="tc">
-          <img src={logo} className="" alt="logo"/>
-          <h1>SEMI FINAL ROUND</h1>
+        <NavBar
+          isDisplay={isNavbarDisplay}
+          major={major}
+          queryName={queryName}
+          handleReset={this.handleReset}
+          handleChange={this.handleChange}
+          handleClick={this.handleClick}
+          handleSelect={this.handleSelect}/>
+        <header className="tc bg-black">
+          <img src={logo} className="dn di-ns h4 mt4" alt="logo"/>
+          <div className="bg-dark-red f3-ns lh-title">
+            <h1 className="lh-copy white tracked-tight sans-serif">SEMI FINAL ROUND</h1>
+          </div>
         </header>
-        <div className="mt1 flex justify-center">
-          <div className="w-80">
+        <div className="flex justify-center mb4">
+          <div className="w-100 mh4">
             <SearchBar
               handleChange={this.handleChange}
               handleReset={this.handleReset}
               queryName={queryName}/>
             <MajorFilter handleClick={this.handleClick}/>
-              {announcers.length === 0
-                ? <h1 className="tc">Now Loading...</h1>
-                : <AnnouncerList
-                  showedAnnouncers={showedAnnouncers}
-                  major={major}
-                  queryName={queryName}/>}
+            {announcers.length === 0
+              ? <h1 className="tc">Now Loading...</h1>
+              : <AnnouncerList
+                showedAnnouncers={showedAnnouncers}
+                major={major}
+                queryName={queryName} />}
           </div>
         </div>
 
