@@ -10,7 +10,6 @@ import SearchBar from './components/SearchBar'
 import {fetchAnnouncers, filterByName, filterByMajor} from './utils'
 
 import logo from './logo.png'
-import './App.css'
 
 class App extends Component {
 
