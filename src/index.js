@@ -1,5 +1,5 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
+import { render } from 'react-snapshot'
 
 import './index.css'
 import Router from './Router'
@@ -7,5 +7,5 @@ import registerServiceWorker from './registerServiceWorker'
 
 import 'tachyons/css/tachyons.min.css'
 
-ReactDOM.render(<Router />, document.getElementById('root'))
+render(<Router />, document.getElementById('root'))
 registerServiceWorker()
