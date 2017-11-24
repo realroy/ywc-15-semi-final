@@ -1,4 +1,5 @@
 import React from 'react'
+import { Helmet } from 'react-helmet'
 
 import {fetchInterviewee} from '../utils'
 import {majors} from '../configs'
@@ -18,24 +19,25 @@ export default class InvitationCard extends React.Component {
     const {major, firstName, lastName} = interviewees.find(interviewee => interviewee.interviewRef === interviewRef)
     const name = `${firstName} ${lastName}`
     this.setState(prevState => Object.assign({}, prevState, {interviewRef, major, name}))
-    const title = `${interviewRef} ${name} WEB ${major.toUpperCase()}@YWC#15`
-    document.title = title
-    const metaTags = [
-      `https://oroy-ywc15-semi-final.herokuapp.com${this.props.match.url}`,
-      title,
-    ]
-    document.head.children[5].content = metaTags[0]
-    document.head.children[7].content = metaTags[1]
   }
   handleClick = e => this.props.history.push('/')
 
   render() {
     const { interviewRef, major, name } = this.state
     const css = majors[major] ? { color: majors[major].color, textColor: majors[major].textColor } : ''
+    const title = `${interviewRef} ${name} WEB ${major.toUpperCase()}@YWC#15`
     return (
       <div
         id="modal-box"
         className={`fixed dt h-100 w-100 tc bg-${css.color} ${css.textColor}`}>
+        <Helmet>
+          <meta property="og:url"           content="https://oroy-ywc15-semi-final.herokuapp.com/" />
+          <meta property="og:type"          content="article" />
+          <meta property="og:title"         content={title} />
+          <meta property="og:description"   content="Announcement of Applicants Qualified For The Interview" />
+          <meta property="og:image"         content="https://oroy-ywc15-semi-final.herokuapp.com/preview-page.png" />
+          <title>{title}</title>
+        </Helmet>
         <button
           onClick={this.handleClick}
           className="button-reset bn absolute pointer mh2 mt2 h2 w2 br-100 dim bg-white">

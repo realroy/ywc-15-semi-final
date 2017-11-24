@@ -1,4 +1,5 @@
 import React from 'react'
+import { Helmet } from 'react-helmet'
 
 import FloatButton from './FloatButton'
 import MajorFilter from './MajorFilter'
@@ -85,6 +86,14 @@ export default class Home extends React.Component {
     const { interviewees, isFloatButtonDisplay, isNavbarDisplay, major,queryName, showedInterviewees} = this.state
     return (
       <div>
+        <Helmet>
+          <meta property="og:url"           content="https://oroy-ywc15-semi-final.herokuapp.com/" />
+          <meta property="og:type"          content="article" />
+          <meta property="og:title"         content="YWC#15 Semi Final Round" />
+          <meta property="og:description"   content="Announcement Of Applicants Qualified For The Interview" />
+          <meta property="og:image"         content="https://oroy-ywc15-semi-final.herokuapp.com/preview-page.png" />
+          <title>YWC#15 Semi Final Round</title>
+        </Helmet>
         <FloatButton isDisplay={isFloatButtonDisplay}/>
         <NavBar
           isDisplay={isNavbarDisplay}
