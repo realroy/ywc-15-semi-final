@@ -2,8 +2,10 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 
 import './index.css'
-import App from './App'
+import Router from './Router'
 import registerServiceWorker from './registerServiceWorker'
 
-ReactDOM.render(<App />, document.getElementById('root'))
+import 'tachyons/css/tachyons.min.css'
+
+ReactDOM.render(<Router />, document.getElementById('root'))
 registerServiceWorker()

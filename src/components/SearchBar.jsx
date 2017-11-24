@@ -1,8 +1,8 @@
 import React from 'react'
 
-export default function SearchBar({ handleChange, handleReset, queryName }) {
+export default function SearchBar({ handleChange, handleSubmit, handleReset, queryName }) {
   return (
-    <form className="bg-white center pa4 dn db-ns" onChange={handleChange}>
+    <form className="bg-white center pa4 dn db-ns" onSubmit={handleSubmit}>
       <fieldset className="cf bn ma0 pa0">
         <legend className="pa0 f4-ns mb3 black b sans-serif">SEARCH</legend>
         <div className="cf">
@@ -11,12 +11,14 @@ export default function SearchBar({ handleChange, handleReset, queryName }) {
             type="text"
             id="input-query-name"
             value={queryName}
+            onChange={handleChange}
             placeholder="Type Name, Interview reference to search..."/>
           <button 
             className="f5 button-reset fl pv3 tc bn bg-animate bg-dark-red hover-bg-red white pointer w-20 b br2 br--right"
-            onClick={handleReset}>RESET</button> 
+            onClick={handleReset}>RESET</button>
         </div>
       </fieldset>
+      <input type="submit" hidden/>
     </form>
   )
 }

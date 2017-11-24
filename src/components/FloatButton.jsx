@@ -1,5 +1,6 @@
 import React from 'react'
-import arrow from '../arrow.svg'
+
+import arrow from '../imgs/arrow.svg'
 
 const handleClick = e => {
   const a = 50
@@ -16,8 +17,8 @@ const handleClick = e => {
 
 export default function FloatButton ({ isDisplay }) {
   return (
-    !isDisplay
-      ? ''
-      : <button id="float-btn" onClick={handleClick}><img src={arrow} alt="back to top"/></button>
+    isDisplay
+      ? <button id="float-btn" onClick={handleClick}><img src={arrow} alt="back to top"/></button>
+      : ''
   )
 }

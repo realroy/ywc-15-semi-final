@@ -47,9 +47,7 @@ export default function NavBar({
                   key={key}
                   id={key}
                   onClick={handleClick}
-                  className={`w-25 fl mt3 pointer tc sans-serif fw9 bg-${majors[key].color} ${key === majors.design.major
-                  ? 'black'
-                  : 'white'} pa1 ph3`}>
+                  className={`w-25 fl mt3 pointer tc sans-serif fw9 bg-${majors[key].color} ${majors[key].textColor} pa1 ph3`}>
                   {key.toUpperCase()}
                 </div>
               ))}
