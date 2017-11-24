@@ -13,7 +13,7 @@ export default function ModalBox ({ major, name, interviewRef, isDisplay, handle
         <img src={closeIcon} alt="close-btn"/>
       </button>
       <div className="dtc v-mid">
-        <div className={`mh1 mh6-ns pv3 pv6-ns w-100-ns ba b--${fontColor} br1`}>
+        <div className={`mh1 mh6-ns pv3 pv6-ns ba b--${fontColor} br1`}>
          <header >
           <h2 className="f6 ttu tracked mb2 lh-title fw9">{interviewRef}</h2>
         </header>
@@ -26,9 +26,5 @@ export default function ModalBox ({ major, name, interviewRef, isDisplay, handle
        
       </div>
     </div>
-    // <div id="modal-box" className="bg-white black fixed w-100 h-100">
-    //   <button onClick={handleClose}>Close</button>
-    //   {major} - {name}({ interviewRef })
-    // </div>
   ) : ''
 }

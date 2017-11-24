@@ -99,8 +99,11 @@ class App extends Component {
     const {major, announcers, showedAnnouncers, queryName, isFloatButtonDisplay, isNavbarDisplay, selectedAnnouncer, isModalDisplay } = this.state
     return (
       <div className="">
-        <ModalBox {...selectedAnnouncer} isDisplay={isModalDisplay} handleClose={this.handleToggleModal} />
-        <FloatButton isDisplay={isFloatButtonDisplay}/>
+        <ModalBox
+          {...selectedAnnouncer}
+          isDisplay={isModalDisplay}
+          handleClose={this.handleToggleModal} />
+        <FloatButton isDisplay={isFloatButtonDisplay} />
         <NavBar
           isDisplay={isNavbarDisplay}
           major={major}
@@ -109,7 +112,7 @@ class App extends Component {
           handleChange={this.handleChange}
           handleClick={this.handleClick}
           handleSelect={this.handleSelect}/>
-        <header className="tc bg-black mt6">
+        <header className="tc bg-black mt6 mt0-ns">
           <img src={logo} className="dn di-ns h4 mt4" alt="logo"/>
           <div className="bg-dark-red f3-ns lh-title">
             <h1 className="lh-copy white tracked-tight sans-serif">SEMI FINAL ROUND</h1>
