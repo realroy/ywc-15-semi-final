@@ -1,7 +1,6 @@
 import React from 'react'
 
 import {majors} from '../configs'
-import {capitalize} from '../utils'
 
 function NotFoundRow({ queryName }) {
   return (
@@ -11,13 +10,13 @@ function NotFoundRow({ queryName }) {
   )
 }
 
-function NormalRow({firstName, lastName, major, interviewRef}) {
+function NormalRow({firstName, lastName, major, interviewRef, handleToggleModal}) {
   const cssClass = {
-    rim: `pv1 ph3 pa3-ns bb b--black-20 w-10-l white sans-serif fw9 bg-${majors[major].color}`,
-    normal: "pv1 ph3 pa3-ns bb b--black-20"
+    rim: `pv1 tl tc-ns pa2 pa3-ns bb b--black-20 w-10-l ${major === majors.design.major ? 'black' : 'white'} sans-serif fw9 bg-${majors[major].color}`,
+    normal: "pv1 pa2 pa3-ns bb b--black-20"
   } 
   return (
-    <tr>
+    <tr id={`${firstName}-${lastName}-${major}-${interviewRef}`} onClick={handleToggleModal}>
       <td className={cssClass.rim}>{major.toUpperCase()}</td>
       <td className={cssClass.normal}>{firstName} {lastName} ({interviewRef})</td>
     </tr>
@@ -25,12 +24,12 @@ function NormalRow({firstName, lastName, major, interviewRef}) {
   )
 }
 
-export default function AnnouncerList({showedAnnouncers, queryName, major }) {
+export default function AnnouncerList({showedAnnouncers, queryName, major, handleToggleModal }) {
   return (
-    <table className={`ba br4-ns tc f6 f3-ns mt3 chonburi overflow-hidden w-100 bg-white black`} cellSpacing="0">
+    <table className={`bn br4-ns tc f6 f3-ns mt3 serif overflow-hidden w-100 bg-white black`} cellSpacing="0">
       <tbody className="lh-copy">
         {(showedAnnouncers.length > 0)
-          ? showedAnnouncers.map(announcer => <NormalRow key={announcer.interviewRef} {...announcer}/>)
+          ? showedAnnouncers.map(announcer => <NormalRow key={announcer.interviewRef} handleToggleModal={handleToggleModal} {...announcer}/>)
           : <NotFoundRow queryName={queryName} />}
       </tbody>
     </table>
