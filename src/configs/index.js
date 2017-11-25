@@ -29,7 +29,6 @@ export const initialState = {
     isNavbarDisplay: false,
     isFloatButtonDisplay: false,
     major: 'all',
-    interviewees: [],
     showedInterviewees: [],
     queryName: ''
 }

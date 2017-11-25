@@ -16,7 +16,7 @@ function NormalRow({ firstName, lastName, major, interviewRef, handleClick }) {
     normal: "pv1 pa2 pa3-ns bb b--black-20 sans-serif"
   } 
   return (
-    <tr id={interviewRef} onClick={handleClick}>
+    <tr id={`${interviewRef}-${major}-${firstName}-${lastName}`} onClick={handleClick}>
       <td className={cssClass.rim}>{major.toUpperCase()}</td>
       <td className={cssClass.normal}>{firstName} {lastName} ({interviewRef})</td>
     </tr>

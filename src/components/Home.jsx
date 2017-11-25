@@ -6,9 +6,9 @@ import MajorFilter from './MajorFilter'
 import NavBar from './NavBar'
 import SearchBar from './SearchBar'
 import IntervieweeList from './IntervieweeList'
+import Loading from './Loading'
 import logo from '../logo.png'
 import {
-  fetchInterviewee,
   filterByMajor,
   filterByNameAndInterviewRef,
   shouldShowFloatingBtn,
@@ -45,18 +45,25 @@ export default class Home extends React.Component {
       () => this.updateShowedInterviewees()
     )
   }
-
   handleSubmit = e => {
     e.preventDefault()
     const { major, queryName } = this.state
     this.updateShowedInterviewees(major, queryName)
   }
 
-  handleTdTagClick = e => this.props.history.push(`/invitation-card/${e.target.parentNode.id}`)
+  handleTdTagClick = e => {
+    const data = e.target.parentNode.id.split('-')
+    const interviewRef = data[0]
+    const major = data[1]
+    const firstName = data[2]
+    const lastName = data[3]
+    const name = `${firstName} ${lastName}`
+    this.props.handleSelectInterviewee({ interviewRef, major, name }, this.props.history.push('/invitation-card'))
+  }
 
   updateShowedInterviewees = (major = initialState.major, queryName = initialState.queryName) => {
     const showedInterviewees = filterByNameAndInterviewRef(
-      filterByMajor(this.state.interviewees, major),
+      filterByMajor(this.props.interviewees, major),
       queryName
     )
     this.setState(prevState => Object.assign({}, prevState, { showedInterviewees }))
@@ -67,23 +74,13 @@ export default class Home extends React.Component {
     isNavbarDisplay: shouldShowNavbar()
   }))
 
-  async componentWillMount() {
-    try {
-      const interviewees = await fetchInterviewee()
-      this.setState(
-        prevState => Object.assign({}, prevState, { interviewees }),
-        () => this.updateShowedInterviewees()
-      )
-      window.$INTERVIEWEES = interviewees
-      console.log(window.$INTERVIEWEES)
-    } catch (err) {
-      console.error(err)
-    }
+  componentDidMount() {
+    this.updateShowedInterviewees()
     document.addEventListener("scroll", this.scrollListener)
   }
 
   render() {
-    const { interviewees, isFloatButtonDisplay, isNavbarDisplay, major,queryName, showedInterviewees} = this.state
+    const { isFloatButtonDisplay, isNavbarDisplay, major,queryName, showedInterviewees} = this.state
     return (
       <div>
         <Helmet>
@@ -112,8 +109,8 @@ export default class Home extends React.Component {
               handleReset={this.handleReset}
               queryName={queryName}/>
             <MajorFilter handleClick={this.handleClick}/>
-          {interviewees.length === 0
-            ? <LoadingPlaceHolder />
+          {this.props.interviewees.length === 0
+            ? <Loading />
             : <IntervieweeList
                 handleClick={this.handleTdTagClick}
                 showedInterviewees={showedInterviewees}
@@ -126,9 +123,6 @@ export default class Home extends React.Component {
   }
 }
 
-const LoadingPlaceHolder = () => (
-  <h1 className="tc">Now Loading... </h1>
-)
 
 const Header = () => (
   <header className="tc bg-black mt6 mt0-ns">

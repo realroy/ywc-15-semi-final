@@ -1,5 +1,5 @@
 import React from 'react'
-import { render } from 'react-snapshot'
+import { render } from 'react-router-dom'
 
 import './index.css'
 import Router from './Router'

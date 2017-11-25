@@ -1,6 +1,6 @@
 import { initialState } from '../configs'
 
-export const filterByNameAndInterviewRef = (array = initialState.interviewees, query = initialState.queryName) => {
+export const filterByNameAndInterviewRef = (array = [], query = initialState.queryName) => {
   query = query.trim()
   const splitedQuery = query.split(' ')
   if(query === initialState.queryName)
