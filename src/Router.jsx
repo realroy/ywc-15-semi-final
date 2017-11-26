@@ -11,24 +11,41 @@ export default class extends React.Component {
   
   state = {
     interviewees: [],
-    selectedInterviewee: {}
+    selectedInterviewee: {
+      major: '',
+      interviewRef: '',
+      name: ''
+    }
   }
 
   handleSelectInterviewee = (selectedInterviewee, cb) => {
     this.setState(prevState => Object.assign({}, prevState, { selectedInterviewee }), cb)
   }
 
-  async componentWillMount() {
+  findByInterviewRef = async (interviewRef, cb) => {
+    await this.updateInterviewees()
+    const { major, firstName, lastName } = this.state.interviewees.find(interviewee => interviewee.interviewRef === interviewRef)
+    const selectedInterviewee = { major, interviewRef, name: `${firstName} ${lastName}`}
+    this.setState(prevState => Object.assign({}, prevState, { selectedInterviewee }))
+  }
+
+  updateInterviewees = async () => {
     try {
-      const interviewees = await fetchInterviewee()
-      this.setState(prevState => Object.assign({}, { interviewees }))
+      if(this.state.interviewees.length === 0) {
+        const interviewees = await fetchInterviewee()
+        this.setState(prevState => Object.assign({}, { interviewees }))
+      }  
     } catch (err) {
       console.error(err)
     }
   }
+
+  async componentWillMount() {
+    await this.updateInterviewees()
+  }
  
   render() {
-    const { state, props, handleSelectInterviewee } = this
+    const { state, props, handleSelectInterviewee, findByInterviewRef } = this
     return (
       <BrowserRouter>
         <div>
@@ -37,8 +54,8 @@ export default class extends React.Component {
             path="/"
             component={routeProps => asyncComponent(home, { handleSelectInterviewee, ...state, ...props, ...routeProps })} />
           <Route
-            path="/invitation-card"
-            component={routeProps => asyncComponent(invitationCard, { ...state, ...props, ...routeProps })} />
+            path="/invitation-card/:interviewRef"
+            component={routeProps => asyncComponent(invitationCard, { findByInterviewRef,...state, ...props, ...routeProps })} />
         </div>
       </BrowserRouter>
     )

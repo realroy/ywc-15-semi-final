@@ -58,7 +58,7 @@ export default class Home extends React.Component {
     const firstName = data[2]
     const lastName = data[3]
     const name = `${firstName} ${lastName}`
-    this.props.handleSelectInterviewee({ interviewRef, major, name }, this.props.history.push('/invitation-card'))
+    this.props.handleSelectInterviewee({ interviewRef, major, name }, this.props.history.push(`/invitation-card/${interviewRef}`))
   }
 
   updateShowedInterviewees = (major = initialState.major, queryName = initialState.queryName) => {
